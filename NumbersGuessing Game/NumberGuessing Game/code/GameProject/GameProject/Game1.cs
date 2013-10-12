@@ -31,6 +31,7 @@ namespace GameProject
         Rectangle screenRectangle;
 
         // Increment 2: the board
+        NumberBoard numberBoard;
 
         public Game1()
         {
@@ -72,6 +73,9 @@ namespace GameProject
             screenRectangle = new Rectangle(0, 0, openingScreen.Width, openingScreen.Height);
 
             // Increment 2: create the board object (this will be moved before you're done with the project)
+            int boardSideLength = Math.Min(WINDOW_HEIGHT, WINDOW_WIDTH) - 100;
+            Vector2 boardCenter = new Vector2(WINDOW_WIDTH / 2, WINDOW_HEIGHT/ 2);
+            numberBoard = new NumberBoard(Content, boardCenter,boardSideLength, 8, null);
         }
 
         /// <summary>
@@ -95,7 +99,10 @@ namespace GameProject
                 this.Exit();
 
             // Increment 2: change game state if game state is GameState.Menu and user presses Enter
-
+            if (gameState==GameState.Menu && Keyboard.GetState().IsKeyDown(Keys.Enter))
+            {
+                gameState = GameState.Play;
+            }
             // if we're actually playing, update mouse state and update board
 
             base.Update(gameTime);
@@ -111,7 +118,17 @@ namespace GameProject
 
             // Increments 1 and 2: draw appropriate items here
             spriteBatch.Begin();
-            spriteBatch.Draw(openingScreen, screenRectangle, Color.White);
+
+            if (gameState == GameState.Menu)
+            {
+                spriteBatch.Draw(openingScreen, screenRectangle, Color.White);
+            }
+            else if (gameState==GameState.Play)
+            {
+                numberBoard.Draw(spriteBatch);
+                
+            }
+            
             spriteBatch.End();
 
             base.Draw(gameTime);

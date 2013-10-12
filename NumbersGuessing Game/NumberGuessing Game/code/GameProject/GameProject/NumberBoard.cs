@@ -46,9 +46,11 @@ namespace GameProject
             int correctNumber, SoundBank soundBank)
         {
             // load content for the board and create draw rectangle
+            LoadContent(contentManager);
+            drawRectangle = new Rectangle(50, 50, boardTexture.Width-100, boardTexture.Height-100);
 
             // calculate side length for number tiles
-
+            tileSideLength = (sideLength - BORDER_SIZE*(NUM_COLUMNS+1)) / NUM_COLUMNS;
             // initialize array of number tiles
 
         }
@@ -80,8 +82,11 @@ namespace GameProject
         public void Draw(SpriteBatch spriteBatch)
         {
             // draw the board
+            spriteBatch.Draw(boardTexture, drawRectangle, Color.White);
 
             // draw all the number tiles
+
+           
             
         }
 
@@ -96,6 +101,7 @@ namespace GameProject
         private void LoadContent(ContentManager contentManager)
         {
             // load the background for the board
+            boardTexture = contentManager.Load<Texture2D>("board");
 
         }
 
