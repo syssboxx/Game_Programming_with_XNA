@@ -88,6 +88,7 @@ namespace GameProject
         public void Draw(SpriteBatch spriteBatch)
         {
             // draw the tile
+            spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White);
         }
 
         #endregion
@@ -105,6 +106,8 @@ namespace GameProject
             string numberString = ConvertIntToString(number);
 
             // load content for the tile and set source rectangle
+            texture = contentManager.Load<Texture2D>(numberString);
+            sourceRectangle = new Rectangle(0, 0, texture.Width / 2, texture.Height);
 
         }
 

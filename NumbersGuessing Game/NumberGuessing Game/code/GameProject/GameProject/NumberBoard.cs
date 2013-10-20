@@ -47,12 +47,20 @@ namespace GameProject
         {
             // load content for the board and create draw rectangle
             LoadContent(contentManager);
-            drawRectangle = new Rectangle(50, 50, boardTexture.Width-100, boardTexture.Height-100);
+            drawRectangle = new Rectangle((int)(center.X-sideLength/2), (int)(center.Y-sideLength/2), sideLength, sideLength);
 
             // calculate side length for number tiles
             tileSideLength = (sideLength - BORDER_SIZE*(NUM_COLUMNS+1)) / NUM_COLUMNS;
             // initialize array of number tiles
-
+            int number = 1;
+            for (int i = 0; i < NUM_ROWS; i++)
+            {
+                for (int j = 0; j < NUM_COLUMNS; j++)
+                {
+                    tiles[i, j] = new NumberTile(contentManager, CalculateTileCenter(i,j), tileSideLength,
+            number++, correctNumber, null);
+                }
+            }
         }
 
         #endregion
@@ -81,12 +89,19 @@ namespace GameProject
         /// <param name="spriteBatch">the SpriteBatch to use for the drawing</param>
         public void Draw(SpriteBatch spriteBatch)
         {
+            
             // draw the board
             spriteBatch.Draw(boardTexture, drawRectangle, Color.White);
 
             // draw all the number tiles
-
-           
+            for (int i = 0; i < NUM_ROWS; i++)
+            {
+                for (int j = 0; j < NUM_COLUMNS; j++)
+                {
+                    tiles[i, j].Draw(spriteBatch);
+                }
+            }
+            
             
         }
 
@@ -102,7 +117,6 @@ namespace GameProject
         {
             // load the background for the board
             boardTexture = contentManager.Load<Texture2D>("board");
-
         }
 
         /// <summary>

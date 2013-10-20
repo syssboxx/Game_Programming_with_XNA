@@ -72,8 +72,9 @@ namespace GameProject
             openingScreen = Content.Load<Texture2D>("openingscreen");
             screenRectangle = new Rectangle(0, 0, openingScreen.Width, openingScreen.Height);
 
-            // Increment 2: create the board object (this will be moved before you're done with the project)
-            int boardSideLength = Math.Min(WINDOW_HEIGHT, WINDOW_WIDTH) - 100;
+            // Increment 2: create the board object (this will be moved before you're done with the project) 
+            //make the board width and height equal to 90% of the wimdow height
+            int boardSideLength = (int)(WINDOW_HEIGHT*0.9);
             Vector2 boardCenter = new Vector2(WINDOW_WIDTH / 2, WINDOW_HEIGHT/ 2);
             numberBoard = new NumberBoard(Content, boardCenter,boardSideLength, 8, null);
         }
