@@ -22,16 +22,33 @@ namespace GameProject
         // whether or not this tile is the correct number
         bool isCorrectNumber;
 
+        //if the tile is visible, if the tile is blinking, and if the tile is shrinking
+        bool isVisible = true;
+        bool isBlinking = false;
+        bool isShrinking = false;
+
+        bool clickStarted=false;
+        bool buttonReleased=false;
+
         // drawing support
         Texture2D texture;
+        Texture2D blinkingTexture;
+        Texture2D currentTexture;
         Rectangle drawRectangle;
         Rectangle sourceRectangle;
 
+        //sound support
+        SoundBank soundBank;
+
         // blinking support
-        const int TOTAL_BLINK_MILLISECONDS = 4000;
+        const int TOTAL_BLINK_MILLISECONDS = 3000;
         int elapsedBlinkMilliseconds = 0;
         const int FRAME_BLINK_MILLISECONDS = 1000;
         int elapsedFrameMilliseconds = 0;
+
+        //shrinking support
+        const int TOTAL_SHRINK_MILLISECONDS = 2000;
+        int elapsedShrinkMilliseconds = 0;
 
         #endregion
 
@@ -53,8 +70,8 @@ namespace GameProject
             this.originalSideLength = sideLength;
 
             // set sound bank field
+            this.soundBank = soundBank;
             
-
             // load content for the tile and create draw rectangle
             LoadContent(contentManager, number);
             drawRectangle = new Rectangle((int)center.X - sideLength / 2,
@@ -76,6 +93,89 @@ namespace GameProject
         /// <return>true if the correct number was guessed, false otherwise</return>
         public bool Update(GameTime gameTime, MouseState mouse)
         {
+            if (isBlinking)
+            {
+                elapsedBlinkMilliseconds += gameTime.ElapsedGameTime.Milliseconds;
+                if (elapsedBlinkMilliseconds>=TOTAL_BLINK_MILLISECONDS)
+                {
+                    isVisible = false;
+                    return true;
+                }
+
+                //check if it's end of the frame
+                elapsedFrameMilliseconds += gameTime.ElapsedGameTime.Milliseconds;
+                if (elapsedFrameMilliseconds >= FRAME_BLINK_MILLISECONDS)
+                {
+                    elapsedFrameMilliseconds = 0;
+                    if (sourceRectangle.X == 0)
+                    {
+                        sourceRectangle.X = currentTexture.Width / 2;
+                    }
+                    else 
+                    {
+                        sourceRectangle.X = 0;
+                    }
+                }
+            }
+            else if (isShrinking)
+            {
+                elapsedShrinkMilliseconds += gameTime.ElapsedGameTime.Milliseconds;
+                int sideLength = originalSideLength * (TOTAL_SHRINK_MILLISECONDS - elapsedShrinkMilliseconds) / TOTAL_SHRINK_MILLISECONDS;
+                if (sideLength>0)
+                {
+                    drawRectangle.Width = sideLength;
+                    drawRectangle.Height = sideLength;
+                }
+                else
+                {
+                    isVisible = false;
+
+                }
+            }
+            else
+            {
+                if (drawRectangle.Contains(mouse.X, mouse.Y))
+                {
+                    if (buttonReleased && mouse.LeftButton == ButtonState.Pressed)
+                    {
+                        clickStarted = true;
+                        buttonReleased = false;
+                    }
+                    else if (mouse.LeftButton == ButtonState.Released)
+                    {
+                        buttonReleased = true;
+                    }
+                    //if click finished on button change game state
+                    if (clickStarted)
+                    {
+                        //check for blinking and shrinking
+                        if (isCorrectNumber)
+                        {
+                            isBlinking = true;
+
+                            //play correct guess sound
+                            soundBank.PlayCue("correctGuess");
+
+                            currentTexture = blinkingTexture;
+                            sourceRectangle = new Rectangle(0, 0, blinkingTexture.Width / 2, blinkingTexture.Height);
+                        }
+                        else
+                        {
+                            isShrinking = true;
+
+                            //play incorrect guess sound
+                            soundBank.PlayCue("incorrectGuess");
+                        }
+                        clickStarted = false;
+                    }
+
+                    sourceRectangle.X = currentTexture.Width / 2;
+                }
+                else
+                {
+                    sourceRectangle.X = 0;
+                }
+            }
 
             // if we get here, return false
             return false;
@@ -88,7 +188,11 @@ namespace GameProject
         public void Draw(SpriteBatch spriteBatch)
         {
             // draw the tile
-            spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White);
+            if (isVisible)
+            {
+                spriteBatch.Draw(currentTexture, drawRectangle, sourceRectangle, Color.White);
+            }
+            
         }
 
         #endregion
@@ -104,10 +208,14 @@ namespace GameProject
         {
             // convert the number to a string
             string numberString = ConvertIntToString(number);
+            string blinkingNumberString="blinking"+numberString;
 
             // load content for the tile and set source rectangle
             texture = contentManager.Load<Texture2D>(numberString);
             sourceRectangle = new Rectangle(0, 0, texture.Width / 2, texture.Height);
+
+            blinkingTexture = contentManager.Load<Texture2D>(blinkingNumberString);
+            currentTexture = texture;
 
         }
 

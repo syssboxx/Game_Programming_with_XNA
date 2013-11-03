@@ -58,7 +58,7 @@ namespace GameProject
                 for (int j = 0; j < NUM_COLUMNS; j++)
                 {
                     tiles[i, j] = new NumberTile(contentManager, CalculateTileCenter(i,j), tileSideLength,
-            number++, correctNumber, null);
+            number++, correctNumber, soundBank);
                 }
             }
         }
@@ -77,8 +77,19 @@ namespace GameProject
         /// <return>true if the correct number was guessed, false otherwise</return>
         public bool Update(GameTime gameTime, MouseState mouse)
         {
+            bool isCorrect;
             // update all the number tiles
-
+            for (int i = 0; i < NUM_ROWS; i++)
+            {
+                for (int j = 0; j < NUM_COLUMNS; j++)
+                {
+                    isCorrect=tiles[i, j].Update(gameTime, mouse);
+                    if (isCorrect)
+                    {
+                        return true;
+                    }
+                }
+            }
             // return false because the correct number wasn't guessed
             return false;
         }
@@ -101,6 +112,7 @@ namespace GameProject
                     tiles[i, j].Draw(spriteBatch);
                 }
             }
+
             
             
         }

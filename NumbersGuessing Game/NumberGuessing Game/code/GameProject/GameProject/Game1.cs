@@ -33,6 +33,14 @@ namespace GameProject
         // Increment 2: the board
         NumberBoard numberBoard;
 
+        //Random generator for correct number
+        Random rand = new Random();
+
+        //audio components
+        AudioEngine audioEngine;
+        WaveBank waveBank;
+        SoundBank soundBank;
+        
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -67,16 +75,18 @@ namespace GameProject
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // load audio content
+            audioEngine = new AudioEngine(@"Content\sounds.xgs");
+            waveBank = new WaveBank(audioEngine, @"Content\Wave Bank.xwb");
+            soundBank = new SoundBank(audioEngine, @"Content\Sound Bank.xsb");
+
 
             // Increment 1: load opening screen and set opening screen draw rectangle
             openingScreen = Content.Load<Texture2D>("openingscreen");
             screenRectangle = new Rectangle(0, 0, openingScreen.Width, openingScreen.Height);
 
             // Increment 2: create the board object (this will be moved before you're done with the project) 
-            //make the board width and height equal to 90% of the wimdow height
-            int boardSideLength = (int)(WINDOW_HEIGHT*0.9);
-            Vector2 boardCenter = new Vector2(WINDOW_WIDTH / 2, WINDOW_HEIGHT/ 2);
-            numberBoard = new NumberBoard(Content, boardCenter,boardSideLength, 8, null);
+            //make the board width and height equal to 90% of the wimdow height - the code is moved in StartGame()
+            StartGame();
         }
 
         /// <summary>
@@ -95,8 +105,10 @@ namespace GameProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            KeyboardState keyboard = Keyboard.GetState();
+
+            // Allows the game to exit when press escape
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed||keyboard.IsKeyDown(Keys.Escape))
                 this.Exit();
 
             // Increment 2: change game state if game state is GameState.Menu and user presses Enter
@@ -104,8 +116,20 @@ namespace GameProject
             {
                 gameState = GameState.Play;
             }
-            // if we're actually playing, update mouse state and update board
 
+            // if we're actually playing, update mouse state and update board
+            if (gameState==GameState.Play)
+            {
+                MouseState mouse = Mouse.GetState();
+                bool correct = numberBoard.Update(gameTime, mouse);
+                if (correct)
+                {
+                    soundBank.PlayCue("newGame");
+                    StartGame();
+                }
+                
+            }
+            
             base.Update(gameTime);
         }
 
@@ -141,8 +165,14 @@ namespace GameProject
         void StartGame()
         {
             // randomly generate new number for game
+            int randomCorrectNumber = rand.Next(1, 10);
 
             // create the board object (this will be moved before you're done)
+            // Increment 2: create the board object (this will be moved before you're done with the project) 
+            //make the board width and height equal to 90% of the wimdow height
+            int boardSideLength = (int)(WINDOW_HEIGHT * 0.9);
+            Vector2 boardCenter = new Vector2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+            numberBoard = new NumberBoard(Content, boardCenter, boardSideLength, randomCorrectNumber, soundBank);
 
         }
     }
