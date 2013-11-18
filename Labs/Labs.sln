@@ -7,6 +7,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab02_VariablesConstants", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab03_TemperatureConversion", "Lab03_Calculations\Lab03_TemperatureConversion.csproj", "{7855FE74-5ED6-4CDE-AFE9-237802584901}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab04_ClassesAndObjects", "Lab04_ClassesAndObjects\Lab04_ClassesAndObjects.csproj", "{770AD5D5-326A-485D-8A43-2394031820B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab05_XNA_Basics", "Lab05_XNA_Basics\Lab05_XNA_Basics\Lab05_XNA_Basics.csproj", "{087ED3B4-ED80-463C-A744-8466DE824359}"
+EndProject
+Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "Lab05_XNA_BasicsContent", "Lab05_XNA_Basics\Lab05_XNA_BasicsContent\Lab05_XNA_BasicsContent.contentproj", "{1D9FDEB4-1008-478C-9C7D-08E07C6250B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab06_MoreXNA", "Lab06_MoreXNA\Lab06_MoreXNA\Lab06_MoreXNA.csproj", "{B877F172-4CCA-44EA-80A9-42E4D9D1CFFE}"
+EndProject
+Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "Lab06_MoreXNAContent", "Lab06_MoreXNA\Lab06_MoreXNAContent\Lab06_MoreXNAContent.contentproj", "{4FE0A05B-07C9-41A1-9D42-B4CECA4E5746}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab07_strings", "Lab07_strings\Lab07_strings.csproj", "{54399807-BD5A-4F0A-994F-57E543B62187}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -25,6 +37,26 @@ Global
 		{7855FE74-5ED6-4CDE-AFE9-237802584901}.Debug|x86.Build.0 = Debug|x86
 		{7855FE74-5ED6-4CDE-AFE9-237802584901}.Release|x86.ActiveCfg = Release|x86
 		{7855FE74-5ED6-4CDE-AFE9-237802584901}.Release|x86.Build.0 = Release|x86
+		{770AD5D5-326A-485D-8A43-2394031820B1}.Debug|x86.ActiveCfg = Debug|x86
+		{770AD5D5-326A-485D-8A43-2394031820B1}.Debug|x86.Build.0 = Debug|x86
+		{770AD5D5-326A-485D-8A43-2394031820B1}.Release|x86.ActiveCfg = Release|x86
+		{770AD5D5-326A-485D-8A43-2394031820B1}.Release|x86.Build.0 = Release|x86
+		{087ED3B4-ED80-463C-A744-8466DE824359}.Debug|x86.ActiveCfg = Debug|x86
+		{087ED3B4-ED80-463C-A744-8466DE824359}.Debug|x86.Build.0 = Debug|x86
+		{087ED3B4-ED80-463C-A744-8466DE824359}.Release|x86.ActiveCfg = Release|x86
+		{087ED3B4-ED80-463C-A744-8466DE824359}.Release|x86.Build.0 = Release|x86
+		{1D9FDEB4-1008-478C-9C7D-08E07C6250B6}.Debug|x86.ActiveCfg = Debug|x86
+		{1D9FDEB4-1008-478C-9C7D-08E07C6250B6}.Release|x86.ActiveCfg = Release|x86
+		{B877F172-4CCA-44EA-80A9-42E4D9D1CFFE}.Debug|x86.ActiveCfg = Debug|x86
+		{B877F172-4CCA-44EA-80A9-42E4D9D1CFFE}.Debug|x86.Build.0 = Debug|x86
+		{B877F172-4CCA-44EA-80A9-42E4D9D1CFFE}.Release|x86.ActiveCfg = Release|x86
+		{B877F172-4CCA-44EA-80A9-42E4D9D1CFFE}.Release|x86.Build.0 = Release|x86
+		{4FE0A05B-07C9-41A1-9D42-B4CECA4E5746}.Debug|x86.ActiveCfg = Debug|x86
+		{4FE0A05B-07C9-41A1-9D42-B4CECA4E5746}.Release|x86.ActiveCfg = Release|x86
+		{54399807-BD5A-4F0A-994F-57E543B62187}.Debug|x86.ActiveCfg = Debug|x86
+		{54399807-BD5A-4F0A-994F-57E543B62187}.Debug|x86.Build.0 = Debug|x86
+		{54399807-BD5A-4F0A-994F-57E543B62187}.Release|x86.ActiveCfg = Release|x86
+		{54399807-BD5A-4F0A-994F-57E543B62187}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
