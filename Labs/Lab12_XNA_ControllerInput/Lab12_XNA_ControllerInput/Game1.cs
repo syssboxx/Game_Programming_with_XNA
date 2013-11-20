@@ -95,8 +95,6 @@ namespace Lab12_XNA_ControllerInput
 
             if (gamepad.IsConnected)
             {
-                
-
                 //Spawning a new teddy bear when B button is pressed
                 if (gamepad.Buttons.B==ButtonState.Pressed)
                 {

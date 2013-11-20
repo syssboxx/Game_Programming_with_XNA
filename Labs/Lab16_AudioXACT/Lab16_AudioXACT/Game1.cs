@@ -16,13 +16,27 @@ namespace Lab16_AudioXACT
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        const int WINDOW_WIDTH = 800;
+        const int WINDOW_HEIGHT = 600;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        AudioEngine audioEngine;
+        WaveBank waveBank;
+        SoundBank soundBank;
+
+        bool mouseClicked = false;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            graphics.PreferredBackBufferWidth = WINDOW_WIDTH;
+            graphics.PreferredBackBufferHeight = WINDOW_HEIGHT;
+
+            IsMouseVisible = true;
         }
 
         /// <summary>
@@ -48,6 +62,9 @@ namespace Lab16_AudioXACT
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            audioEngine = new AudioEngine(@"Content\GameAudio.xgs");
+            waveBank = new WaveBank(audioEngine, @"Content\Wave Bank.xwb");
+            soundBank = new SoundBank(audioEngine, @"Content\Sound Bank.xsb");
         }
 
         /// <summary>
@@ -71,6 +88,35 @@ namespace Lab16_AudioXACT
                 this.Exit();
 
             // TODO: Add your update logic here
+            MouseState mouse = Mouse.GetState();
+
+            //use of mouse click and not mouse press
+            if (mouse.LeftButton==ButtonState.Pressed && mouseClicked==false)
+            {
+                mouseClicked = true;
+            }
+            else if (mouse.LeftButton==ButtonState.Released && mouseClicked==true)
+            {
+                mouseClicked = false;
+
+                //select quadrant and plays cue
+                if (mouse.Y < WINDOW_HEIGHT / 2 && mouse.X < WINDOW_WIDTH / 2)
+                {
+                    soundBank.PlayCue("upperLeft");
+                }
+                else if (mouse.Y < WINDOW_HEIGHT / 2 && mouse.X > WINDOW_WIDTH / 2)
+                {
+                    soundBank.PlayCue("upperRight");
+                }
+                else if (mouse.Y > WINDOW_HEIGHT / 2 && mouse.X < WINDOW_WIDTH / 2)
+                {
+                    soundBank.PlayCue("lowerLeft");
+                }
+                else if (mouse.Y > WINDOW_HEIGHT / 2 && mouse.X > WINDOW_WIDTH / 2)
+                {
+                    soundBank.PlayCue("lowerRight");
+                }
+            }
 
             base.Update(gameTime);
         }

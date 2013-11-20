@@ -41,15 +41,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab14_Loops", "Lab14_Loops\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab15_ListsAndLoops", "Lab15_ListsAndLoops\Lab15_ListsAndLoops\Lab15_ListsAndLoops.csproj", "{CBFB972F-60B5-4FEA-9D62-B4C8EBD54EA6}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "Lab15_ListsAndLoopsContent", "Lab15_ListsAndLoops\Lab15_ListsAndLoopsContent\Lab15_ListsAndLoopsContent.contentproj", "{A731CD85-2267-4CC2-A528-80BFF87D6927}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab15_ListsAndLoopsContent", "Lab15_ListsAndLoops\Lab15_ListsAndLoopsContent\Lab15_ListsAndLoopsContent.contentproj", "{A731CD85-2267-4CC2-A528-80BFF87D6927}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab16_AudioXACT", "Lab16_AudioXACT\Lab16_AudioXACT\Lab16_AudioXACT.csproj", "{7EB38A81-1E9A-4E75-BA5E-FA45B50D5CEC}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "Lab16_AudioXACTContent", "Lab16_AudioXACT\Lab16_AudioXACTContent\Lab16_AudioXACTContent.contentproj", "{E39ED415-9C02-4BBB-B6EF-DD1DD113B37D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab16_AudioXACTContent", "Lab16_AudioXACT\Lab16_AudioXACTContent\Lab16_AudioXACTContent.contentproj", "{E39ED415-9C02-4BBB-B6EF-DD1DD113B37D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab17_TextInputXNA", "Lab17_TextInputXNA\Lab17_TextInputXNA\Lab17_TextInputXNA.csproj", "{9561BD02-29BF-48FC-A54B-0624B1FFD6BF}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "Lab17_TextInputXNAContent", "Lab17_TextInputXNA\Lab17_TextInputXNAContent\Lab17_TextInputXNAContent.contentproj", "{EBEF3DA6-47ED-4284-B970-13092402981D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab17_TextInputXNAContent", "Lab17_TextInputXNA\Lab17_TextInputXNAContent\Lab17_TextInputXNAContent.contentproj", "{EBEF3DA6-47ED-4284-B970-13092402981D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
