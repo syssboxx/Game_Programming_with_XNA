@@ -61,6 +61,8 @@ namespace BurgerShooter
 
             graphics.PreferredBackBufferWidth = GameConstants.WINDOW_WIDTH;
             graphics.PreferredBackBufferHeight = GameConstants.WINDOW_HEIGHT;
+
+            IsMouseVisible = true;
         }
 
         /// <summary>
@@ -92,6 +94,8 @@ namespace BurgerShooter
             // load projectile and explosion sprites
 
             // add initial game objects
+            burger = new Burger(this.Content, "burger", GameConstants.WINDOW_WIDTH / 2, GameConstants.WINDOW_HEIGHT - 50);
+            SpawnBear();
         }
 
         /// <summary>
@@ -159,7 +163,8 @@ namespace BurgerShooter
             spriteBatch.Begin();
 
             // draw game objects
-            //burger.Draw(spriteBatch);
+            burger.Draw(spriteBatch);
+
             foreach (TeddyBear bear in bears)
             {
                 bear.Draw(spriteBatch);
@@ -212,14 +217,28 @@ namespace BurgerShooter
         private void SpawnBear()
         {
             // generate random location
+            int locationX=GetRandomLocation(SPAWN_BORDER_SIZE,GameConstants.WINDOW_WIDTH-SPAWN_BORDER_SIZE);
+            int locationY = GetRandomLocation(SPAWN_BORDER_SIZE, GameConstants.WINDOW_HEIGHT-SPAWN_BORDER_SIZE);
 
-            // generate random velocity
+            // generate random velocity=speed & direction 
+            float speed = RandomNumberGenerator.NextFloat(GameConstants.MIN_BEAR_SPEED, GameConstants.BEAR_SPEED_RANGE);
+
+            //get random angle (0,360)=(0,2*PI)
+            double randAngle = RandomNumberGenerator.NextDouble(0, Math.PI);
+
+            //get vector direction for velocity
+            float xVelocity = (float)(speed * Math.Cos(randAngle));
+            float yVelocity = (float)(speed * Math.Sin(randAngle));
+
+            Vector2 velocity = new Vector2(xVelocity, yVelocity);
 
             // create new bear
+            TeddyBear newBear = new TeddyBear(this.Content,"teddybear",locationX, locationY,velocity);
 
             // make sure we don't spawn into a collision
 
             // add new bear to list
+            bears.Add(newBear);
 
         }
 

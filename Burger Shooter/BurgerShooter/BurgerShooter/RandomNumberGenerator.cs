@@ -51,10 +51,10 @@ namespace BurgerShooter
         /// <param name="minValue">inclusive min value</param>
         /// <param name="maxValue">exclusive max value</param>
         /// <returns>the random number</returns>
-        //public static int Next(int minValue, int maxValue)
-        //{
-        //    return rand.Next(minValue, maxValue);
-        //}
+        public static int Next(int minValue, int maxValue)
+        {
+            return rand.Next(minValue, maxValue);
+        }
 
         /// <summary>
         /// Returns a nonnegative random number less than maxValue (exclusive)
@@ -72,10 +72,10 @@ namespace BurgerShooter
         /// <param name="minValue">inclusive min value</param>
         /// <param name="maxValue">inclusive max value</param>
         /// <returns>the random number</returns>
-        //public static float NextFloat(float minValue, float maxValue)
-        //{
-        //    return minValue + (float)rand.NextDouble() * (maxValue - minValue);
-        //}
+        public static float NextFloat(float minValue, float maxValue)
+        {
+            return minValue + (float)rand.NextDouble() * (maxValue - minValue);
+        }
 
         /// <summary>
         /// Returns a random number between 0.0 and 1.0
@@ -84,6 +84,11 @@ namespace BurgerShooter
         public static double NextDouble()
         {
             return rand.NextDouble();
+        }
+
+        public static double NextDouble(double minValue, double maxValue)
+        {
+            return minValue + (float)rand.NextDouble() * (maxValue - minValue);
         }
 
         #endregion
