@@ -92,6 +92,9 @@ namespace BurgerShooter
             // load sprite font
 
             // load projectile and explosion sprites
+            frenchFriesSprite = Content.Load<Texture2D>("frenchfries");
+            teddyBearProjectileSprite = Content.Load<Texture2D>("teddybearprojectile");
+            explosionSpriteStrip = Content.Load<Texture2D>("explosion");
 
             // add initial game objects
             burger = new Burger(this.Content, "burger", GameConstants.WINDOW_WIDTH / 2, GameConstants.WINDOW_HEIGHT - 50);
@@ -120,6 +123,7 @@ namespace BurgerShooter
                 this.Exit();
 
             // update burger
+            burger.Update(gameTime, GamePad.GetState(PlayerIndex.One), soundBank);
 
             // update other game objects
             foreach (TeddyBear bear in bears)
@@ -142,12 +146,47 @@ namespace BurgerShooter
             // check and resolve collisions between burger and projectiles
 
             // check and resolve collisions between teddy bears and projectiles
-
+            foreach(TeddyBear bear in bears)
+            {
+                foreach ( Projectile projectile in projectiles)
+                {
+                    if(bear.CollisionRectangle.Intersects(projectile.CollisionRectangle)&& projectile.Type==ProjectileType.FrenchFries)
+                    {
+                        bear.IsActive=false;
+                        projectile.IsActive=false;
+                        Explosion newExplosion = new Explosion(explosionSpriteStrip, bear.Location.X, bear.Location.Y);
+                        explosions.Add(newExplosion);
+                    }
+                }
+            }
+                                    
             // clean out inactive teddy bears and add new ones as necessary
+            for (int i = bears.Count - 1; i >= 0; i--)
+            {
+                if (!bears[i].IsActive)
+                {
+                    bears.RemoveAt(i);
+                }
+            }
 
-            // clean out inactive projectiles
+            //clean out inactive projectiles
+            for (int j = projectiles.Count - 1; j >= 0; j--)
+            {
+                if (!projectiles[j].IsActive)
+                {
+                    projectiles.RemoveAt(j);
+                }
 
+            }
+            
             // clean out finished explosions
+            for (int k = explosions.Count - 1; k >= 0; k--)
+            {
+                if (explosions[k].Finished)
+                {
+                    explosions.RemoveAt(k); 
+                }
+            }
 
             base.Update(gameTime);
         }
@@ -195,7 +234,19 @@ namespace BurgerShooter
         public static Texture2D GetProjectileSprite(ProjectileType type)
         {
             // replace with code to return correct projectile sprite based on projectile type
-            return frenchFriesSprite;
+            if (type==ProjectileType.FrenchFries)
+            {
+                return frenchFriesSprite; 
+            }
+            else if (type==ProjectileType.TeddyBear)
+            {
+                return teddyBearProjectileSprite;
+            }
+            else
+            {
+                return null;     
+            }
+            
         }
 
         /// <summary>
@@ -204,7 +255,7 @@ namespace BurgerShooter
         /// <param name="projectile">the projectile to add</param>
         public static void AddProjectile(Projectile projectile)
         {
-
+            projectiles.Add(projectile);
         }
 
         #endregion
@@ -217,7 +268,7 @@ namespace BurgerShooter
         private void SpawnBear()
         {
             // generate random location
-            int locationX=GetRandomLocation(SPAWN_BORDER_SIZE,GameConstants.WINDOW_WIDTH-SPAWN_BORDER_SIZE);
+            int locationX = GetRandomLocation(SPAWN_BORDER_SIZE, GameConstants.WINDOW_WIDTH-SPAWN_BORDER_SIZE);
             int locationY = GetRandomLocation(SPAWN_BORDER_SIZE, GameConstants.WINDOW_HEIGHT-SPAWN_BORDER_SIZE);
 
             // generate random velocity=speed & direction 

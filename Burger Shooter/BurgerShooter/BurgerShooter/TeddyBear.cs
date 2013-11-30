@@ -22,6 +22,7 @@ namespace BurgerShooter
         // drawing support
         Texture2D sprite;
         Rectangle drawRectangle;
+        Texture2D littleTeddySprite; 
 
         // velocity information
         Vector2 velocity = new Vector2(0, 0);
@@ -119,6 +120,18 @@ namespace BurgerShooter
 
             // fire projectile as appropriate
             // timer concept (for animations) introduced in Chapter 7
+            elapsedShotTime += gameTime.ElapsedGameTime.Milliseconds;
+            if (elapsedShotTime>firingDelay)
+            {
+                //it's time for the teddy bear to shoot.
+                elapsedShotTime = 0;
+                firingDelay = GetRandomFiringDelay();
+
+                //create teddy bear projectile
+                littleTeddySprite = Game1.GetProjectileSprite(ProjectileType.TeddyBear);
+                Projectile bearProjectile = new Projectile(ProjectileType.TeddyBear, littleTeddySprite, drawRectangle.X + drawRectangle.Width / 2, drawRectangle.Y + drawRectangle.Height , GetProjectileYVelocity());
+                Game1.AddProjectile(bearProjectile);
+            }
 
         }
 

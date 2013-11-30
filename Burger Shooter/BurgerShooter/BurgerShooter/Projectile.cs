@@ -89,9 +89,19 @@ namespace BurgerShooter
         public void Update(GameTime gameTime)
         {
             // move projectile
+            drawRectangle.Y+= (int)(yVelocity * gameTime.ElapsedGameTime.Milliseconds);
 
             // check for outside game window
-
+            if (drawRectangle.Y<0)
+            {
+                drawRectangle.Y = 0;
+                active = false;
+            }
+            if (drawRectangle.Y>GameConstants.WINDOW_HEIGHT)
+            {
+                drawRectangle.Y = GameConstants.WINDOW_HEIGHT;
+                active = false;
+            }
         }
 
         /// <summary>
@@ -100,7 +110,7 @@ namespace BurgerShooter
         /// <param name="spriteBatch">the sprite batch to use</param>
         public void Draw(SpriteBatch spriteBatch)
         {
-
+            spriteBatch.Draw(sprite, drawRectangle, Color.White);
         }
 
         #endregion

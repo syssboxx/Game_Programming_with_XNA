@@ -21,6 +21,7 @@ namespace BurgerShooter
         // graphic and drawing info
         Texture2D sprite;
         Rectangle drawRectangle;
+        Texture2D frenchFriesSprite;
 
         // burger stats
         int health = 100;
@@ -28,6 +29,8 @@ namespace BurgerShooter
         // shooting support
         bool canShoot = true;
         int elapsedCooldownTime = 0;
+
+               
 
         #endregion
 
@@ -119,11 +122,47 @@ namespace BurgerShooter
         public void Update(GameTime gameTime, GamePadState gamepad,
             SoundBank soundBank)
         {
-            // burger should only respond to input if it still has health
+            KeyboardState keyboard = Keyboard.GetState();
 
-            // move burger using thumbstick deflection
+            //move the burger with left arrow (or move burger using thumbstick deflection)
+            if (health > 0)
+            {
+                if (keyboard.IsKeyDown(Keys.Left))
+                {
+                    drawRectangle.X -= 1;
+                }
+                else if (keyboard.IsKeyDown(Keys.Right))
+                {
+                    drawRectangle.X += 1;
+                }
 
+                // burger should only respond to input if it still has health
+                if (keyboard.IsKeyDown(Keys.Space) && canShoot)
+                {
+                    canShoot = false;
+                    frenchFriesSprite = Game1.GetProjectileSprite(ProjectileType.FrenchFries);
+                    Projectile burgerProjectile = new Projectile(ProjectileType.FrenchFries, frenchFriesSprite, 
+                                                                 drawRectangle.X + drawRectangle.Width / 2, drawRectangle.Y + drawRectangle.Height / 2,
+                                                                 -1 * GameConstants.FRENCH_FRIES_PROJECTILE_OFFSET);
+
+                    //add projectile to the list
+                    Game1.AddProjectile(burgerProjectile);
+                                        
+                }
+                if (!canShoot)
+                {
+                    elapsedCooldownTime+= gameTime.ElapsedGameTime.Milliseconds;
+                    if (elapsedCooldownTime>=GameConstants.BURGER_COOLDOWN_MILLISECONDS || keyboard.IsKeyUp(Keys.Space))
+                    {
+                        canShoot = true;
+                        elapsedCooldownTime = 0;
+                    }
+                }
+               
+            }
+            
             // update shooting allowed
+           
             // timer concept (for animations) introduced in Chapter 7
 
             // shoot if appropriate

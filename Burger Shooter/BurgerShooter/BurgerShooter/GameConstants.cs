@@ -20,7 +20,7 @@ namespace BurgerShooter
         public const float TEDDY_BEAR_PROJECTILE_SPEED = 0.3f;
         public const int TEDDY_BEAR_PROJECTILE_DAMAGE = 5;
         public const int TEDDY_BEAR_PROJECTILE_OFFSET = 20;
-        public const float FRENCH_FRIES_PROJECTILE_SPEED = 0.4f;
+        public const float FRENCH_FRIES_PROJECTILE_SPEED = 0.3f;
         public const int FRENCH_FRIES_PROJECTILE_DAMAGE = 5;
         public const int FRENCH_FRIES_PROJECTILE_OFFSET = 10;
 
