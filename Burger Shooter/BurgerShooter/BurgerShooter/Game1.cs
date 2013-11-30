@@ -89,6 +89,7 @@ namespace BurgerShooter
 
             // load audio content
 
+
             // load sprite font
 
             // load projectile and explosion sprites
@@ -97,8 +98,14 @@ namespace BurgerShooter
             explosionSpriteStrip = Content.Load<Texture2D>("explosion");
 
             // add initial game objects
-            burger = new Burger(this.Content, "burger", GameConstants.WINDOW_WIDTH / 2, GameConstants.WINDOW_HEIGHT - 50);
-            SpawnBear();
+            burger = new Burger(this.Content, "burger", GameConstants.WINDOW_WIDTH / 2, GameConstants.WINDOW_HEIGHT-25);
+
+            //load multiple bears
+            for (int i = 0; i < GameConstants.MAX_BEARS; i++)
+            {
+                SpawnBear(); 
+            }
+            
         }
 
         /// <summary>
@@ -140,10 +147,68 @@ namespace BurgerShooter
             }
 
             // check and resolve collisions between teddy bears
+            for (int i = 0; i < bears.Count-1; i++)
+			{
+			    for (int j = i+1; j < bears.Count; j++)
+			    {
+                    CollisionResolutionInfo collisionBears = CollisionUtils.CheckCollision(100, GameConstants.WINDOW_WIDTH, GameConstants.WINDOW_HEIGHT, bears[i].Velocity, bears[i].DrawRectangle,
+                                                                                        bears[j].Velocity, bears[j].DrawRectangle);
+                    if (collisionBears!=null)
+                    {
+                        //there's a collision we need to resolve - two possibilities for each of the two teddy bears
+                        //first teddy bear
+                        if (collisionBears.FirstOutOfBounds)
+                        {
+                            bears[i].IsActive = false;
+                        }
+                        else
+                        {
+                            bears[i].Velocity = collisionBears.FirstVelocity;
+                            bears[i].DrawRectangle = collisionBears.FirstDrawRectangle;
+                        }
+                        //second teddy bear
+                        if (collisionBears.SecondOutOfBounds)
+                        {
+                            bears[j].IsActive = false;
+                        }
+                        else
+                        {
+                            bears[j].Velocity = collisionBears.SecondVelocity;
+                            bears[j].DrawRectangle = collisionBears.SecondDrawRectangle;
+                        }
+                    }
+
+			    }
+			}
 
             // check and resolve collisions between burger and teddy bears
+            for (int i = 0; i < bears.Count; i++)
+            {
+                if (bears[i].CollisionRectangle.Intersects(burger.CollisionRectangle))
+                {
+                    burger.Health-=GameConstants.BEAR_DAMAGE;
+                    bears[i].IsActive = false;
+                    Explosion bearBurgerExplosion = new Explosion(explosionSpriteStrip, bears[i].Location.X, bears[i].Location.Y);
+                    explosions.Add(bearBurgerExplosion);
+                }
+            }
 
             // check and resolve collisions between burger and projectiles
+            for (int i = 0; i < projectiles.Count; i++)
+            {
+                if (projectiles[i].CollisionRectangle.Intersects(burger.CollisionRectangle))
+                {
+                    projectiles[i].IsActive = false;
+                    if (projectiles[i].Type==ProjectileType.TeddyBear)
+                    {
+                        burger.Health -= GameConstants.TEDDY_BEAR_PROJECTILE_DAMAGE;
+                    }
+                    else
+                    {
+                        burger.Health -= GameConstants.FRENCH_FRIES_PROJECTILE_DAMAGE;
+                    }
+                }
+            }
 
             // check and resolve collisions between teddy bears and projectiles
             foreach(TeddyBear bear in bears)
@@ -154,8 +219,8 @@ namespace BurgerShooter
                     {
                         bear.IsActive=false;
                         projectile.IsActive=false;
-                        Explosion newExplosion = new Explosion(explosionSpriteStrip, bear.Location.X, bear.Location.Y);
-                        explosions.Add(newExplosion);
+                        Explosion teddyFriesExplosion = new Explosion(explosionSpriteStrip, bear.Location.X, bear.Location.Y);
+                        explosions.Add(teddyFriesExplosion);
                     }
                 }
             }
@@ -166,8 +231,14 @@ namespace BurgerShooter
                 if (!bears[i].IsActive)
                 {
                     bears.RemoveAt(i);
+                    //add new bear every time a bear is killed
+                    while (bears.Count!=GameConstants.MAX_BEARS)
+                    {
+                        SpawnBear();
+                    }
                 }
             }
+
 
             //clean out inactive projectiles
             for (int j = projectiles.Count - 1; j >= 0; j--)
@@ -176,7 +247,6 @@ namespace BurgerShooter
                 {
                     projectiles.RemoveAt(j);
                 }
-
             }
             
             // clean out finished explosions
@@ -269,7 +339,7 @@ namespace BurgerShooter
         {
             // generate random location
             int locationX = GetRandomLocation(SPAWN_BORDER_SIZE, GameConstants.WINDOW_WIDTH-SPAWN_BORDER_SIZE);
-            int locationY = GetRandomLocation(SPAWN_BORDER_SIZE, GameConstants.WINDOW_HEIGHT-SPAWN_BORDER_SIZE);
+            int locationY = GetRandomLocation(SPAWN_BORDER_SIZE/4, GameConstants.WINDOW_HEIGHT - 2 * SPAWN_BORDER_SIZE);
 
             // generate random velocity=speed & direction 
             float speed = RandomNumberGenerator.NextFloat(GameConstants.MIN_BEAR_SPEED, GameConstants.BEAR_SPEED_RANGE);
@@ -287,6 +357,14 @@ namespace BurgerShooter
             TeddyBear newBear = new TeddyBear(this.Content,"teddybear",locationX, locationY,velocity);
 
             // make sure we don't spawn into a collision
+            List<Rectangle> rectanglesList = GetCollisionRectangles();
+            while (!CollisionUtils.IsCollisionFree(newBear.DrawRectangle,rectanglesList))
+            {
+                locationX = GetRandomLocation(SPAWN_BORDER_SIZE, GameConstants.WINDOW_WIDTH - SPAWN_BORDER_SIZE);
+                locationY = GetRandomLocation(SPAWN_BORDER_SIZE / 4, GameConstants.WINDOW_HEIGHT - 2 * SPAWN_BORDER_SIZE);
+                TeddyBear newSpawnBear = new TeddyBear(this.Content, "teddybear", locationX, locationY, velocity);
+                newBear = newSpawnBear;
+            }
 
             // add new bear to list
             bears.Add(newBear);
@@ -336,5 +414,11 @@ namespace BurgerShooter
         }
 
         #endregion
+
+        public static int GetSpawnSize()
+        {
+            return SPAWN_BORDER_SIZE;
+        }
+        
     }
 }

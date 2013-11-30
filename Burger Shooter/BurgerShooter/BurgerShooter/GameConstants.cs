@@ -20,9 +20,9 @@ namespace BurgerShooter
         public const float TEDDY_BEAR_PROJECTILE_SPEED = 0.3f;
         public const int TEDDY_BEAR_PROJECTILE_DAMAGE = 5;
         public const int TEDDY_BEAR_PROJECTILE_OFFSET = 20;
-        public const float FRENCH_FRIES_PROJECTILE_SPEED = 0.3f;
+        public const float FRENCH_FRIES_PROJECTILE_SPEED = 0.1f;
         public const int FRENCH_FRIES_PROJECTILE_DAMAGE = 5;
-        public const int FRENCH_FRIES_PROJECTILE_OFFSET = 10;
+        public const int FRENCH_FRIES_PROJECTILE_OFFSET = 5;
 
         // bear characteristics
         public const int MAX_BEARS = 5;
@@ -35,7 +35,7 @@ namespace BurgerShooter
 
         // burger characteristics
         public const int BURGER_INITIAL_HEALTH = 100;
-        public const int MAX_AXIS_MOVEMENT = 10;
+        public const int MAX_AXIS_MOVEMENT = 100;
         public const int BURGER_COOLDOWN_MILLISECONDS = 500;
 
         // explosion hard-coded animation info. There are better

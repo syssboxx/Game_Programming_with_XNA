@@ -114,6 +114,11 @@ namespace BurgerShooter
             drawRectangle.X += (int)(velocity.X * gameTime.ElapsedGameTime.Milliseconds);
             drawRectangle.Y += (int)(velocity.Y * gameTime.ElapsedGameTime.Milliseconds);
 
+            //if (drawRectangle.Y > GameConstants.WINDOW_HEIGHT - Game1.GetSpawnSize()) 
+            //{
+             //   drawRectangle.Y = GameConstants.WINDOW_HEIGHT - Game1.GetSpawnSize();
+            //}
+            
             // bounce as necessary
             BounceTopBottom(soundBank);
             BounceLeftRight(soundBank);
@@ -177,10 +182,10 @@ namespace BurgerShooter
                 drawRectangle.Y = 0;
                 velocity.Y *= -1;
             }
-            else if ((drawRectangle.Y + drawRectangle.Height) > GameConstants.WINDOW_HEIGHT)
+            else if ((drawRectangle.Y + drawRectangle.Height) > GameConstants.WINDOW_HEIGHT-Game1.GetSpawnSize()/2)
             {
                 // bounce off bottom
-                drawRectangle.Y = GameConstants.WINDOW_HEIGHT - drawRectangle.Height;
+                drawRectangle.Y = GameConstants.WINDOW_HEIGHT - Game1.GetSpawnSize()/2 - drawRectangle.Height;
                 velocity.Y *= -1;
             }
         }

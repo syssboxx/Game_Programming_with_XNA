@@ -60,6 +60,17 @@ namespace BurgerShooter
             get { return drawRectangle; }
         }
 
+        public int Health
+        {
+            get { return health;}
+            set
+            {
+                if (health<0)
+                {
+                    health = value;
+                }
+            }
+        }
         #endregion
 
         #region Private properties
@@ -129,11 +140,20 @@ namespace BurgerShooter
             {
                 if (keyboard.IsKeyDown(Keys.Left))
                 {
-                    drawRectangle.X -= 1;
+                    drawRectangle.X -= 5;
                 }
                 else if (keyboard.IsKeyDown(Keys.Right))
                 {
-                    drawRectangle.X += 1;
+                    drawRectangle.X += 5;
+                }
+
+                if (drawRectangle.X<0)
+                {
+                    drawRectangle.X = 0;
+                }
+                if (drawRectangle.X>GameConstants.WINDOW_WIDTH-drawRectangle.Width)
+                {
+                    drawRectangle.X = GameConstants.WINDOW_WIDTH-drawRectangle.Width;
                 }
 
                 // burger should only respond to input if it still has health
