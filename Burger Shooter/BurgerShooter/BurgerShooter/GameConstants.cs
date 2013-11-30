@@ -34,7 +34,7 @@ namespace BurgerShooter
         public const int BEAR_FIRING_RATE_RANGE = 1000;
 
         // burger characteristics
-        public const int BURGER_INITIAL_HEALTH = 100;
+        public const int BURGER_INITIAL_HEALTH = 5;
         public const int MAX_AXIS_MOVEMENT = 100;
         public const int BURGER_COOLDOWN_MILLISECONDS = 500;
 
@@ -48,11 +48,11 @@ namespace BurgerShooter
         // display support
         const int DISPLAY_OFFSET = 35;
         public const string SCORE_PREFIX = "Score: ";
-        public static readonly Vector2 SCORE_LOCATION =
-            new Vector2(DISPLAY_OFFSET, DISPLAY_OFFSET);
+        public static readonly Vector2 SCORE_LOCATION = new Vector2(DISPLAY_OFFSET, DISPLAY_OFFSET);
         public const string HEALTH_PREFIX = "Health: ";
-        public static readonly Vector2 HEALTH_LOCATION =
-            new Vector2(DISPLAY_OFFSET, 2 * DISPLAY_OFFSET);
+        public static readonly Vector2 HEALTH_LOCATION = new Vector2(DISPLAY_OFFSET, 2 * DISPLAY_OFFSET);
+        public const string GAMEOVER_PREXIF = "GAME OVER !";
+        public static readonly Vector2 GAMEOVER_LOCATION = new Vector2(DISPLAY_OFFSET, 3*DISPLAY_OFFSET);
 
     }
 }

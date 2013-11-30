@@ -24,7 +24,7 @@ namespace BurgerShooter
         Texture2D frenchFriesSprite;
 
         // burger stats
-        int health = 100;
+        int health =GameConstants.BURGER_INITIAL_HEALTH;
 
         // shooting support
         bool canShoot = true;
@@ -65,9 +65,10 @@ namespace BurgerShooter
             get { return health;}
             set
             {
+                health = value;
                 if (health<0)
                 {
-                    health = value;
+                    health = 0;
                 }
             }
         }
@@ -164,6 +165,7 @@ namespace BurgerShooter
                     Projectile burgerProjectile = new Projectile(ProjectileType.FrenchFries, frenchFriesSprite, 
                                                                  drawRectangle.X + drawRectangle.Width / 2, drawRectangle.Y + drawRectangle.Height / 2,
                                                                  -1 * GameConstants.FRENCH_FRIES_PROJECTILE_OFFSET);
+                    soundBank.PlayCue("BurgerShot");
 
                     //add projectile to the list
                     Game1.AddProjectile(burgerProjectile);

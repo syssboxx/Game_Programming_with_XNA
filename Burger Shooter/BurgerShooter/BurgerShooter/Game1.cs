@@ -40,6 +40,7 @@ namespace BurgerShooter
         // scoring support
         int score = 0;
         string scoreString = GameConstants.SCORE_PREFIX + 0;
+        string gameOverString = GameConstants.GAMEOVER_PREXIF;
 
         // health support
         string healthString = GameConstants.HEALTH_PREFIX +
@@ -88,9 +89,12 @@ namespace BurgerShooter
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // load audio content
-
+            audioEngine = new AudioEngine(@"Content\GameAudio.xgs");
+            waveBank = new WaveBank(audioEngine, @"Content\Wave Bank.xwb");
+            soundBank = new SoundBank(audioEngine, @"Content\Sound Bank.xsb");
 
             // load sprite font
+            font = Content.Load<SpriteFont>("Arial20");
 
             // load projectile and explosion sprites
             frenchFriesSprite = Content.Load<Texture2D>("frenchfries");
@@ -155,6 +159,7 @@ namespace BurgerShooter
                                                                                         bears[j].Velocity, bears[j].DrawRectangle);
                     if (collisionBears!=null)
                     {
+                        soundBank.PlayCue("TeddyBounce");
                         //there's a collision we need to resolve - two possibilities for each of the two teddy bears
                         //first teddy bear
                         if (collisionBears.FirstOutOfBounds)
@@ -186,9 +191,12 @@ namespace BurgerShooter
             {
                 if (bears[i].CollisionRectangle.Intersects(burger.CollisionRectangle))
                 {
+                    soundBank.PlayCue("BurgerDamage");
                     burger.Health-=GameConstants.BEAR_DAMAGE;
+                    CheckBurgerKill();
                     bears[i].IsActive = false;
                     Explosion bearBurgerExplosion = new Explosion(explosionSpriteStrip, bears[i].Location.X, bears[i].Location.Y);
+                    soundBank.PlayCue("Explosion");
                     explosions.Add(bearBurgerExplosion);
                 }
             }
@@ -198,14 +206,17 @@ namespace BurgerShooter
             {
                 if (projectiles[i].CollisionRectangle.Intersects(burger.CollisionRectangle))
                 {
+                    soundBank.PlayCue("BurgerDamage");
                     projectiles[i].IsActive = false;
                     if (projectiles[i].Type==ProjectileType.TeddyBear)
                     {
                         burger.Health -= GameConstants.TEDDY_BEAR_PROJECTILE_DAMAGE;
+                        CheckBurgerKill();
                     }
                     else
                     {
                         burger.Health -= GameConstants.FRENCH_FRIES_PROJECTILE_DAMAGE;
+                        CheckBurgerKill();
                     }
                 }
             }
@@ -220,8 +231,11 @@ namespace BurgerShooter
                         bear.IsActive=false;
                         projectile.IsActive=false;
                         Explosion teddyFriesExplosion = new Explosion(explosionSpriteStrip, bear.Location.X, bear.Location.Y);
+                        soundBank.PlayCue("Explosion");
                         explosions.Add(teddyFriesExplosion);
+                        score += GameConstants.BEAR_POINTS;
                     }
+
                 }
             }
                                     
@@ -238,8 +252,7 @@ namespace BurgerShooter
                     }
                 }
             }
-
-
+            
             //clean out inactive projectiles
             for (int j = projectiles.Count - 1; j >= 0; j--)
             {
@@ -258,6 +271,10 @@ namespace BurgerShooter
                 }
             }
 
+            //set burger health and scores
+            healthString = GameConstants.HEALTH_PREFIX + burger.Health;
+            scoreString = GameConstants.SCORE_PREFIX + score;
+            
             base.Update(gameTime);
         }
 
@@ -288,6 +305,12 @@ namespace BurgerShooter
             }
 
             // draw score and health
+            spriteBatch.DrawString(font, healthString, GameConstants.HEALTH_LOCATION, Color.White);
+            spriteBatch.DrawString(font, scoreString, GameConstants.SCORE_LOCATION, Color.White);
+            if (burger.Health == 0)
+            {
+                spriteBatch.DrawString(font, gameOverString, GameConstants.GAMEOVER_LOCATION, Color.Red);
+            }
 
             spriteBatch.End();
 
@@ -410,7 +433,11 @@ namespace BurgerShooter
         /// </summary>
         private void CheckBurgerKill()
         {
-
+            if (burger.Health<0 && burgerDead==false)
+            {
+                burgerDead = true;
+                soundBank.PlayCue("BurgerDeath");
+            }
         }
 
         #endregion

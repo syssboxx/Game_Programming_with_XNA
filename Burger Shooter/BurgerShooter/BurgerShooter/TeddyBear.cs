@@ -113,12 +113,7 @@ namespace BurgerShooter
             // move the teddy bear
             drawRectangle.X += (int)(velocity.X * gameTime.ElapsedGameTime.Milliseconds);
             drawRectangle.Y += (int)(velocity.Y * gameTime.ElapsedGameTime.Milliseconds);
-
-            //if (drawRectangle.Y > GameConstants.WINDOW_HEIGHT - Game1.GetSpawnSize()) 
-            //{
-             //   drawRectangle.Y = GameConstants.WINDOW_HEIGHT - Game1.GetSpawnSize();
-            //}
-            
+          
             // bounce as necessary
             BounceTopBottom(soundBank);
             BounceLeftRight(soundBank);
@@ -134,7 +129,9 @@ namespace BurgerShooter
 
                 //create teddy bear projectile
                 littleTeddySprite = Game1.GetProjectileSprite(ProjectileType.TeddyBear);
-                Projectile bearProjectile = new Projectile(ProjectileType.TeddyBear, littleTeddySprite, drawRectangle.X + drawRectangle.Width / 2, drawRectangle.Y + drawRectangle.Height , GetProjectileYVelocity());
+                Projectile bearProjectile = new Projectile(ProjectileType.TeddyBear, littleTeddySprite, 
+                                                           drawRectangle.X + drawRectangle.Width / 2, drawRectangle.Y + drawRectangle.Height , GetProjectileYVelocity());
+                soundBank.PlayCue("TeddyShot");
                 Game1.AddProjectile(bearProjectile);
             }
 
@@ -179,12 +176,14 @@ namespace BurgerShooter
             if (drawRectangle.Y < 0)
             {
                 // bounce off top
+                soundBank.PlayCue("TeddyBounce");
                 drawRectangle.Y = 0;
                 velocity.Y *= -1;
             }
             else if ((drawRectangle.Y + drawRectangle.Height) > GameConstants.WINDOW_HEIGHT-Game1.GetSpawnSize()/2)
             {
                 // bounce off bottom
+                soundBank.PlayCue("TeddyBounce");
                 drawRectangle.Y = GameConstants.WINDOW_HEIGHT - Game1.GetSpawnSize()/2 - drawRectangle.Height;
                 velocity.Y *= -1;
             }
@@ -198,12 +197,14 @@ namespace BurgerShooter
             if (drawRectangle.X < 0)
             {
                 // bounc off left
+                soundBank.PlayCue("TeddyBounce");
                 drawRectangle.X = 0;
                 velocity.X *= -1;
             }
             else if ((drawRectangle.X + drawRectangle.Width) > GameConstants.WINDOW_WIDTH)
             {
                 // bounce off right
+                soundBank.PlayCue("TeddyBounce");
                 drawRectangle.X = GameConstants.WINDOW_WIDTH - drawRectangle.Width;
                 velocity.X *= -1;
             }
